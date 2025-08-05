@@ -18,6 +18,7 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FaGoogle, FaGithub } from "react-icons/fa";
 
 const loginSchema = z.object({
   email: z.email("Please enter a valid email address"),
@@ -48,6 +49,34 @@ export default function LoginForm() {
         {
           email: data.email,
           password: data.password,
+          callbackURL: "/",
+        },
+        {
+          onSuccess: () => {
+            form.reset();
+            router.push("/");
+            setIsLoading(false);
+          },
+          onError: (error) => {
+            setError(error.error.message);
+            setIsLoading(false);
+          },
+        }
+      );
+    } catch (error: unknown) {
+      console.error("Sign in error:", error);
+      setError("An error occurred during sign in. Please try again.");
+      setIsLoading(false);
+    }
+  }
+  async function onSocialSubmit(provider: string) {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await authClient.signIn.social(
+        {
+          provider,
           callbackURL: "/",
         },
         {
@@ -138,19 +167,23 @@ export default function LoginForm() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <Button
+              onClick={() => onSocialSubmit("google")}
               variant={"outline"}
-              className="w-full"
+              className="w-full cursor-pointer"
               type="button"
               disabled={isLoading || form.formState.isSubmitting}
             >
+              <FaGoogle />
               <span className="text-sm">Google</span>
             </Button>
             <Button
+              onClick={() => onSocialSubmit("github")}
               variant={"outline"}
-              className="w-full"
+              className="w-full cursor-pointer"
               type="button"
               disabled={isLoading || form.formState.isSubmitting}
             >
+              <FaGithub />
               <span className="text-sm">GitHub</span>
             </Button>
           </div>

@@ -18,11 +18,11 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { FaGoogle, FaGithub } from "react-icons/fa";
 const signUpSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
-    email: z.string().email("Please enter a valid email address"),
+    email: z.email("Please enter a valid email address"),
     password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
@@ -75,6 +75,34 @@ export default function SignUpForm() {
     } catch (error: unknown) {
       console.error("Sign up error:", error);
       setError("An error occurred during sign up. Please try again.");
+      setIsLoading(false);
+    }
+  }
+  async function onSocialSubmit(provider: string) {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await authClient.signIn.social(
+        {
+          provider,
+          callbackURL: "/",
+        },
+        {
+          onSuccess: () => {
+            form.reset();
+            router.push("/");
+            setIsLoading(false);
+          },
+          onError: (error) => {
+            setError(error.error.message);
+            setIsLoading(false);
+          },
+        }
+      );
+    } catch (error: unknown) {
+      console.error("Sign in error:", error);
+      setError("An error occurred during sign in. Please try again.");
       setIsLoading(false);
     }
   }
@@ -177,18 +205,22 @@ export default function SignUpForm() {
           <div className="grid grid-cols-2 gap-4">
             <Button
               variant={"outline"}
-              className="w-full"
+              className="w-full cursor-pointer"
               type="button"
+              onClick={() => onSocialSubmit("google")}
               disabled={isLoading || form.formState.isSubmitting}
             >
+              <FaGoogle />
               <span className="text-sm">Google</span>
             </Button>
             <Button
               variant={"outline"}
-              className="w-full"
+              className="w-full cursor-pointer"
               type="button"
+              onClick={() => onSocialSubmit("github")}
               disabled={isLoading || form.formState.isSubmitting}
             >
+              <FaGithub />
               <span className="text-sm">GitHub</span>
             </Button>
           </div>
@@ -198,7 +230,7 @@ export default function SignUpForm() {
               href={"/login"}
               className="underline-offset-4 underline hover:text-primary"
             >
-              Sign In
+              Login
             </Link>
           </div>
         </div>
