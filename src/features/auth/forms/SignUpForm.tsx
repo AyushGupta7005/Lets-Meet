@@ -19,6 +19,7 @@ import { OctagonAlertIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import { ErrorContext } from "better-auth/react";
 const signUpSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
@@ -48,6 +49,25 @@ export default function SignUpForm() {
     },
   });
 
+  const handleAuthResult = {
+    onSuccess: () => {
+      form.reset();
+      router.push("/");
+    },
+    onError: (error: ErrorContext) => {
+      setError(error.error.message);
+      setIsLoading(false);
+    },
+  };
+
+  const handleAuthError = (error: unknown, action: string) => {
+    console.error(`${action} error:`, error);
+    setError(
+      `An error occurred during ${action.toLowerCase()}. Please try again.`
+    );
+    setIsLoading(false);
+  };
+
   async function onSubmit(data: SignUpFormData) {
     setIsLoading(true);
     setError(null);
@@ -60,22 +80,10 @@ export default function SignUpForm() {
           password: data.password,
           callbackURL: "/",
         },
-        {
-          onSuccess: () => {
-            form.reset();
-            router.push("/");
-            setIsLoading(false);
-          },
-          onError: (error) => {
-            setError(error.error.message);
-            setIsLoading(false);
-          },
-        }
+        handleAuthResult
       );
     } catch (error: unknown) {
-      console.error("Sign up error:", error);
-      setError("An error occurred during sign up. Please try again.");
-      setIsLoading(false);
+      handleAuthError(error, "Sign up");
     }
   }
   async function onSocialSubmit(provider: string) {
@@ -84,26 +92,11 @@ export default function SignUpForm() {
 
     try {
       await authClient.signIn.social(
-        {
-          provider,
-          callbackURL: "/",
-        },
-        {
-          onSuccess: () => {
-            form.reset();
-            router.push("/");
-            setIsLoading(false);
-          },
-          onError: (error) => {
-            setError(error.error.message);
-            setIsLoading(false);
-          },
-        }
+        { provider, callbackURL: "/" },
+        handleAuthResult
       );
     } catch (error: unknown) {
-      console.error("Sign in error:", error);
-      setError("An error occurred during sign in. Please try again.");
-      setIsLoading(false);
+      handleAuthError(error, "Social sign up");
     }
   }
 
