@@ -1,7 +1,7 @@
 "use client";
 
 import GeneratedAvatar from "@/components/generated-avatar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,7 +37,7 @@ export default function DashboardUserButton() {
     <DropdownMenu>
       <DropdownMenuTrigger className="border-border/10 flex w-full items-center justify-between overflow-hidden rounded-lg border bg-white/5 p-3 hover:bg-white/10">
         {data.user.image ? (
-          <Avatar>
+          <Avatar className="mr-3">
             <AvatarImage
               src={data.user.image}
               alt={userName}
