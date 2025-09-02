@@ -9,19 +9,19 @@ export default function AuthCard({ children }: { children: React.ReactNode }) {
         <CardContent className="grid p-0 md:grid-cols-2">
           {children}
 
-          <div className="bg-radial from-[#4f59ca]/80 to-[#464db7] relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+          <div className="from-sidebar-accent to-sidebar relative hidden flex-col items-center justify-center gap-y-4 bg-radial md:flex">
             <Image src="/logo.svg" alt="Lets Meet" width={92} height={92} />
             <p className="text-2xl font-semibold text-white">Lets Meet</p>
           </div>
         </CardContent>
       </Card>
-      <div className="text-center text-xs text-muted-foreground text-balance *[a]:underline-offset-4 *[a]:underline hover:*[a]:text-primary">
+      <div className="text-muted-foreground *[a]:underline-offset-4 *[a]:underline hover:*[a]:text-primary text-center text-xs text-balance">
         By clicking continue, you agree to our{" "}
-        <a href="#" className="underline-offset-4 underline hover:text-primary">
+        <a href="#" className="hover:text-primary underline underline-offset-4">
           Terms of Service
         </a>{" "}
         and{" "}
-        <a href="#" className="underline-offset-4 underline hover:text-primary">
+        <a href="#" className="hover:text-primary underline underline-offset-4">
           Privacy Policy
         </a>
         .
