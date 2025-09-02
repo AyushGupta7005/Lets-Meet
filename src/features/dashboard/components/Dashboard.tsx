@@ -1,9 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Sidebar } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function Dashboard() {
   const router = useRouter();
   const { data: session } = authClient.useSession();
   if (!session) {
@@ -11,8 +12,8 @@ export default function Home() {
   }
 
   return (
-    <div className="p-10 flex flex-col items-center gap-8">
-      <h1 className="text-2xl font-bold mx-auto text-center">
+    <div className="flex flex-col items-center gap-8 p-10">
+      <h1 className="mx-auto text-center text-2xl font-bold">
         Welcome back, {session.user.name || "User"}!
       </h1>
       <Button
