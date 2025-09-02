@@ -10,7 +10,7 @@ export default function AuthCard({ children }: { children: React.ReactNode }) {
           {children}
 
           <div className="from-sidebar-accent to-sidebar relative hidden flex-col items-center justify-center gap-y-4 bg-radial md:flex">
-            <Image src="/logo.svg" alt="Lets Meet" width={92} height={92} />
+            <Image src="/logo.svg" alt="Lets Meet" width={92} height={92} className="w-auto h-auto"/>
             <p className="text-2xl font-semibold text-white">Lets Meet</p>
           </div>
         </CardContent>
