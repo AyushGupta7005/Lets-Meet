@@ -1,3 +1,4 @@
+"use client";
 import { createAvatar } from "@dicebear/core";
 import { botttsNeutral, initials } from "@dicebear/collection";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
