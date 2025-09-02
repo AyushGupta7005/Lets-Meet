@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 
 export default function DashboardUserButton() {
   const { data, isPending } = authClient.useSession();
+
   const router = useRouter();
   function onLogout() {
     authClient.signOut({
@@ -29,6 +30,9 @@ export default function DashboardUserButton() {
   if (isPending || !data?.user) {
     return null;
   }
+
+  const userName = data.user.name;
+  const userEmail = data.user.email;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="border-border/10 flex w-full items-center justify-between overflow-hidden rounded-lg border bg-white/5 p-3 hover:bg-white/10">
@@ -36,30 +40,30 @@ export default function DashboardUserButton() {
           <Avatar>
             <AvatarImage
               src={data.user.image}
-              alt={data.user.name}
+              alt={userName}
               className="h-8 w-8 rounded-full"
             />
           </Avatar>
         ) : (
           <GeneratedAvatar
-            seed={data.user.name}
+            seed={userName}
             variant="initials"
             className="mr-3 size-9"
           />
         )}
 
         <div className="flex min-w-0 flex-1 flex-col gap-0.5 overflow-hidden text-left">
-          <p className="w-full truncate text-sm">{data.user.name}</p>
-          <p className="w-full truncate text-xs">{data.user.email}</p>
+          <p className="w-full truncate text-sm">{userName}</p>
+          <p className="w-full truncate text-xs">{userEmail}</p>
         </div>
         <ChevronDownIcon className="size-4 shrink-0" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" side="right" className="w-72">
         <DropdownMenuLabel>
           <div className="flex flex-col gap-1">
-            <span className="truncate font-medium">{data.user.name}</span>
+            <span className="truncate font-medium">{userName}</span>
             <span className="text-muted-foreground truncate text-sm font-normal">
-              {data.user.email}
+              {userEmail}
             </span>
           </div>
         </DropdownMenuLabel>
