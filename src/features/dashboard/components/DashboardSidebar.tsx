@@ -44,7 +44,7 @@ export default function DashboardSidebar() {
     <Sidebar>
       <SidebarHeader className="text-sidebar-accent-foreground">
         <Link href="/" className="flex items-center gap-2 px-2 pt-2">
-          <Image src="/logo.svg" width={36} height={36} alt="Logo" />
+          <Image src="/logo.svg" width={36} height={36} alt="Logo" className="w-auto h-auto" />
           <p className="text-2xl font-semibold">Lets Chat</p>
         </Link>
       </SidebarHeader>
