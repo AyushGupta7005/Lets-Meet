@@ -1,4 +1,4 @@
-import Home from "@/features/home/Home";
+import Dashboard from "@/features/dashboard/components/Dashboard";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -10,5 +10,5 @@ export default async function HomePage() {
     redirect("/login");
   }
 
-  return <Home />;
+  return <Dashboard />;
 }
