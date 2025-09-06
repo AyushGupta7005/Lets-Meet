@@ -1,5 +1,5 @@
 import {
-  CommandDialog,
+  CommandResponsiveDialog,
   CommandInput,
   CommandItem,
   CommandList,
@@ -15,13 +15,13 @@ export default function DashboardCommand({
   setOpen,
 }: DashboardCommandProps) {
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Find a meeting or agent" />
       <CommandList>
         <CommandItem key={1}>Meeting 1</CommandItem>
         <CommandItem key={2}>Meeting 2</CommandItem>
         <CommandItem key={3}>Meeting 3</CommandItem>
       </CommandList>
-    </CommandDialog>
+    </CommandResponsiveDialog>
   );
 }
