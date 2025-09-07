@@ -35,12 +35,11 @@ export const columns: ColumnDef<TAgentGetOne>[] = [
     cell: ({ row }) => (
       <Badge variant={"outline"} className="flex items-center gap-x-2">
         <VideoIcon className="size-4 text-blue-700" />
-        {row.original.meetingCount ?? 0}{" "}
-        {row.original.meetingCount === 0
-          ? "No Meeting"
-          : row.original.meetingCount > 1
-            ? "meetings"
-            : "meeting"}
+        {(() => {
+          const count = row.original.meetingCount ?? 0;
+          if (count === 0) return "No meetings";
+          return `${count} ${count > 1 ? "meetings" : "meeting"}`;
+        })()}
       </Badge>
     ),
   },
