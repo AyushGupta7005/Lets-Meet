@@ -4,9 +4,11 @@ import LoadingState from "@/components/loading-state";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-export function Agents() {
+export function Agents({ userId }: { userId: string }) {
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(trpc.agents.getMany.queryOptions());
+  const { data } = useSuspenseQuery(
+    trpc.agents.getMany.queryOptions({ userId }),
+  );
   return <div>{JSON.stringify(data, null, 2)}</div>;
 }
 
