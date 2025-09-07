@@ -28,14 +28,12 @@ import {
 import { toast } from "sonner";
 
 interface AgentsFormProps {
-  userId: string;
   onSuccess?: () => void;
   onCancel?: () => void;
   intialValues?: TAgentGetOne;
 }
 
 export default function AgentsForm({
-  userId,
   intialValues,
   onCancel,
   onSuccess,
@@ -46,9 +44,7 @@ export default function AgentsForm({
   const createAgent = useMutation(
     trpc.agents.create.mutationOptions({
       onSuccess: async () => {
-        await queryClient.invalidateQueries(
-          trpc.agents.getMany.queryOptions({ userId }),
-        );
+        await queryClient.invalidateQueries(trpc.agents.getMany.queryOptions());
 
         if (intialValues?.id) {
           await queryClient.invalidateQueries(
@@ -107,7 +103,7 @@ export default function AgentsForm({
               <FormLabel>Instructions</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="e.g. You are a assistant that provide career advice with structured plans"
+                  placeholder="e.g. You are an assistant that provide career advice with structured plans"
                   {...field}
                 />
               </FormControl>

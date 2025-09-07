@@ -16,15 +16,13 @@ export const agentsRouter = createTRPCRouter({
       return data;
     }),
 
-  getMany: protectedProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ input }) => {
-      const data = await db
-        .select()
-        .from(agent)
-        .where(eq(agent.userId, input.userId));
-      return data;
-    }),
+  getMany: protectedProcedure.query(async ({ ctx }) => {
+    const data = await db
+      .select()
+      .from(agent)
+      .where(eq(agent.userId, ctx.auth.user.id));
+    return data;
+  }),
 
   create: protectedProcedure
     .input(agentCreateSchema)
