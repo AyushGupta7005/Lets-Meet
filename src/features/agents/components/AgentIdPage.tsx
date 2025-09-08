@@ -38,7 +38,7 @@ export default function AgentIdPage({ agentId }: AgentIdPageProps) {
         router.push("/agents");
       },
       onError: (error) =>
-        toast.error(error.message || "Failed to create agent"),
+        toast.error(error.message || "Failed to delete agent"),
     }),
   );
   const [RemoveConfirmationDialog, confirmRemove] = useConfirm(
@@ -55,7 +55,7 @@ export default function AgentIdPage({ agentId }: AgentIdPageProps) {
   return (
     <>
       <UpdateAgentsDialog
-        intialValues={data}
+        initialValues={data}
         open={updateDialogOpen}
         onOpenChange={setUpdateDialogOpen}
       />

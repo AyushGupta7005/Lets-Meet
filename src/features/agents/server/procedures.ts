@@ -99,18 +99,19 @@ export const agentsRouter = createTRPCRouter({
       }
       return removedAgent;
     }),
-  upadate: protectedProcedure
+  update: protectedProcedure
     .input(agentUpdateSchema)
     .mutation(async ({ input, ctx }) => {
+      const { id, ...updates } = input;
       const [updatedAgent] = await db
         .update(agent)
-        .set(input)
-        .where(and(eq(agent.userId, ctx.auth.user.id), eq(agent.id, input.id)))
+        .set({ ...updates, updatedAt: new Date() })
+        .where(and(eq(agent.userId, ctx.auth.user.id), eq(agent.id, id)))
         .returning();
       if (!updatedAgent) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: `No agent with id '${input.id}'`,
+          message: `No agent with id '${id}'`,
         });
       }
       return updatedAgent;

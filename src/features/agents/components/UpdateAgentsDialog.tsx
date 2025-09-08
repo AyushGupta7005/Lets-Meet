@@ -5,12 +5,12 @@ import { TAgentGetOne } from "../types";
 interface CreateAgentsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  intialValues: TAgentGetOne;
+  initialValues: TAgentGetOne;
 }
 export default function UpdateAgentsDialog({
   open,
   onOpenChange,
-  intialValues,
+  initialValues,
 }: CreateAgentsDialogProps) {
   return (
     <ResponsiveDialog
@@ -22,7 +22,7 @@ export default function UpdateAgentsDialog({
       <AgentsForm
         onSuccess={() => onOpenChange(false)}
         onCancel={() => onOpenChange(false)}
-        intialValues={intialValues}
+        initialValues={initialValues}
       />
     </ResponsiveDialog>
   );
