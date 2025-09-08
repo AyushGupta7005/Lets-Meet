@@ -18,7 +18,7 @@ export default function AgentsHeader() {
       <CreateAgentsDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} />
       <div className="flex flex-col gap-y-4 p-4 md:px-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-medium">Agents</h1>
+          <h1 className="text-xl font-medium">My Agents</h1>
           <Button
             onClick={() => setIsDialogOpen(true)}
             className="active:scale-95"
