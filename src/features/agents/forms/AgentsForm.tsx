@@ -30,11 +30,11 @@ import { toast } from "sonner";
 interface AgentsFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
-  intialValues?: TAgentGetOne;
+  initialValues?: TAgentGetOne;
 }
 
 export default function AgentsForm({
-  intialValues,
+  initialValues,
   onCancel,
   onSuccess,
 }: AgentsFormProps) {
@@ -48,30 +48,43 @@ export default function AgentsForm({
           trpc.agents.getMany.queryOptions({}),
         );
 
-        if (intialValues?.id) {
-          await queryClient.invalidateQueries(
-            trpc.agents.getOne.queryOptions({ id: intialValues.id }),
-          );
-        }
         onSuccess?.();
       },
       onError: (error) =>
         toast.error(error.message || "Failed to create agent"),
     }),
   );
+
+  const updateAgent = useMutation(
+    trpc.agents.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.agents.getMany.queryOptions({}),
+        );
+        if (initialValues?.id) {
+          await queryClient.invalidateQueries(
+            trpc.agents.getOne.queryOptions({ id: initialValues.id }),
+          );
+        }
+        onSuccess?.();
+      },
+      onError: (error) => {
+        toast.error(error.message || "Failed to update agent details");
+      },
+    }),
+  );
   const form = useForm({
     resolver: zodResolver(agentCreateSchema),
     defaultValues: {
-      name: intialValues?.name ?? "",
-      instructions: intialValues?.instructions ?? "",
+      name: initialValues?.name ?? "",
+      instructions: initialValues?.instructions ?? "",
     },
   });
-  const isEdit = !!intialValues?.id;
-  const isPending = createAgent.isPending;
+  const isEdit = !!initialValues?.id;
+  const isPending = createAgent.isPending || updateAgent.isPending;
   function onSubmit(values: z.infer<typeof agentCreateSchema>) {
     if (isEdit) {
-      //TODO: update agent
-      toast.error("Update agent is not implemented yet");
+      updateAgent.mutate({ id: initialValues.id, ...values });
     } else {
       createAgent.mutate(values);
     }

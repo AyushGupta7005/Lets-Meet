@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { agent } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
-import { agentCreateSchema } from "../schemas";
+import { agentCreateSchema, agentUpdateSchema } from "../schemas";
 import z from "zod";
 import { and, eq, getTableColumns, ilike, sql, desc, count } from "drizzle-orm";
 import {
@@ -10,16 +10,25 @@ import {
   MAX_PAGE_SIZE,
   MIN_PAGE_SIZE,
 } from "../../../../constants";
+import { TRPCError } from "@trpc/server";
 
 export const agentsRouter = createTRPCRouter({
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .query(async ({ input }) => {
-      const [data] = await db
+    .query(async ({ input, ctx }) => {
+      const [existingAgent] = await db
         .select({ ...getTableColumns(agent), meetingCount: sql<number>`5` })
         .from(agent)
-        .where(eq(agent.id, input.id));
-      return data;
+        .where(and(eq(agent.userId, ctx.auth.user.id), eq(agent.id, input.id)));
+
+      if (!existingAgent) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No agent with id '${input.id}'`,
+        });
+      }
+
+      return existingAgent;
     }),
 
   getMany: protectedProcedure
@@ -73,5 +82,38 @@ export const agentsRouter = createTRPCRouter({
         .values({ ...input, userId: ctx.auth.user.id })
         .returning();
       return newAgent;
+    }),
+
+  remove: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const [removedAgent] = await db
+        .delete(agent)
+        .where(and(eq(agent.userId, ctx.auth.user.id), eq(agent.id, input.id)))
+        .returning();
+      if (!removedAgent) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No agent with id '${input.id}'`,
+        });
+      }
+      return removedAgent;
+    }),
+  update: protectedProcedure
+    .input(agentUpdateSchema)
+    .mutation(async ({ input, ctx }) => {
+      const { id, ...updates } = input;
+      const [updatedAgent] = await db
+        .update(agent)
+        .set({ ...updates, updatedAt: new Date() })
+        .where(and(eq(agent.userId, ctx.auth.user.id), eq(agent.id, id)))
+        .returning();
+      if (!updatedAgent) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No agent with id '${id}'`,
+        });
+      }
+      return updatedAgent;
     }),
 });
