@@ -26,7 +26,7 @@ export const agentsRouter = createTRPCRouter({
     .input(
       z.object({
         search: z.string().nullish(),
-        page: z.number().default(DEFAULT_PAGE),
+        page: z.number().int().min(1).default(DEFAULT_PAGE),
         pageSize: z
           .number()
           .min(MIN_PAGE_SIZE)
@@ -60,7 +60,7 @@ export const agentsRouter = createTRPCRouter({
       const totalPages = Math.ceil(total.count / pageSize);
       return {
         items: data,
-        total: total.count,
+        total: total.count ?? 0,
         totalPages: totalPages,
       };
     }),
