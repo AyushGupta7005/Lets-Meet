@@ -48,6 +48,19 @@ export default function AgentsForm({
           trpc.agents.getMany.queryOptions({}),
         );
 
+        onSuccess?.();
+      },
+      onError: (error) =>
+        toast.error(error.message || "Failed to create agent"),
+    }),
+  );
+
+  const updateAgent = useMutation(
+    trpc.agents.upadate.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.agents.getMany.queryOptions({}),
+        );
         if (intialValues?.id) {
           await queryClient.invalidateQueries(
             trpc.agents.getOne.queryOptions({ id: intialValues.id }),
@@ -55,8 +68,9 @@ export default function AgentsForm({
         }
         onSuccess?.();
       },
-      onError: (error) =>
-        toast.error(error.message || "Failed to create agent"),
+      onError: (error) => {
+        toast.error(error.message || "Failed to update agent details");
+      },
     }),
   );
   const form = useForm({
@@ -67,11 +81,10 @@ export default function AgentsForm({
     },
   });
   const isEdit = !!intialValues?.id;
-  const isPending = createAgent.isPending;
+  const isPending = createAgent.isPending || updateAgent.isPending;
   function onSubmit(values: z.infer<typeof agentCreateSchema>) {
     if (isEdit) {
-      //TODO: update agent
-      toast.error("Update agent is not implemented yet");
+      updateAgent.mutate({ id: intialValues.id, ...values });
     } else {
       createAgent.mutate(values);
     }
