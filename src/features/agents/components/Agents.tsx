@@ -3,11 +3,11 @@ import ErrorState from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { DataTable } from "./data-table";
+import { DataTable } from "../../../components/data-table";
 import { columns } from "./columns";
 import EmptyState from "@/components/empty-state";
 import useAgentsFilters from "../hooks/useAgentsFilters";
-import DataPagination from "./data-pagination";
+import DataPagination from "../../../components/data-pagination";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
