@@ -19,7 +19,7 @@ import MeetingIdPageHeader from "./MeetingIdHeader";
 interface MeetingIdPageProps {
   meetingId: string;
 }
-export default function AgentIdPage({ meetingId }: MeetingIdPageProps) {
+export default function MeetingIdPage({ meetingId }: MeetingIdPageProps) {
   const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
   const router = useRouter();
   const trpc = useTRPC();
@@ -28,17 +28,17 @@ export default function AgentIdPage({ meetingId }: MeetingIdPageProps) {
     trpc.meetings.getOne.queryOptions({ id: meetingId }),
   );
 
-  const deleteAgent = useMutation(
+  const deleteMeeting = useMutation(
     trpc.meetings.remove.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries(
-          trpc.agents.getMany.queryOptions({}),
+          trpc.meetings.getMany.queryOptions({}),
         );
 
         router.push("/meetings");
       },
       onError: (error) =>
-        toast.error(error.message || "Failed to delete agent"),
+        toast.error(error.message || "Failed to delete meeting"),
     }),
   );
   const [RemoveConfirmationDialog, confirmRemove] = useConfirm(
@@ -46,10 +46,10 @@ export default function AgentIdPage({ meetingId }: MeetingIdPageProps) {
     `The following action is permanent and cannot be undone.`,
   );
 
-  const handleRemoveAgent = async () => {
+  const handleRemoveMeeting = async () => {
     const ok = await confirmRemove();
     if (!ok) return;
-    deleteAgent.mutate({ id: meetingId });
+    deleteMeeting.mutate({ id: meetingId });
   };
 
   return (
@@ -65,7 +65,7 @@ export default function AgentIdPage({ meetingId }: MeetingIdPageProps) {
           meetingId={meetingId}
           meetingName={data?.name || ""}
           onEdit={() => setUpdateDialogOpen(true)}
-          onRemove={handleRemoveAgent}
+          onRemove={handleRemoveMeeting}
         />
         <div className="rounded-lg border bg-white">
           <div className="flex flex-col gap-y-5 px-4 py-5">

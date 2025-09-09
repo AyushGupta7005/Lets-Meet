@@ -32,11 +32,7 @@ export default function AgentIdPageHeader({
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink
-              asChild
-              className="text-xl font-medium"
-              href="/agents"
-            >
+            <BreadcrumbLink asChild className="text-xl font-medium">
               <Link href="/agents">My Agents</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>

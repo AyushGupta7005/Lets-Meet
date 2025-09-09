@@ -11,7 +11,7 @@ export const columns: ColumnDef<TMeetingsGetOne>[] = [
     cell: ({ row }) => (
       <div className="flex flex-col gap-y-1">
         <div className="flex items-center gap-x-2">
-          <span className="fontsemibold capitalize">{row.original.name}</span>
+          <span className="font-semibold capitalize">{row.original.name}</span>
         </div>
         <div className="ml-2 flex items-center gap-x-2">
           <CornerDownRightIcon className="text-muted-foreground size-3" />

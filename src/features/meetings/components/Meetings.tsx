@@ -36,8 +36,8 @@ export default function Meetings() {
       {data.items?.length === 0 && !isFiltersModified ? (
         <div className="my-auto">
           <EmptyState
-            title="Create your first Agent"
-            description="Create an agent to join meetings"
+            title="Create your first Meeting"
+            description="Create a meeting to get started"
           />
         </div>
       ) : (

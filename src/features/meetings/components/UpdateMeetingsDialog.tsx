@@ -14,8 +14,8 @@ export default function UpdateMeetingsDialog({
 }: CreateMeetingsDialogProps) {
   return (
     <ResponsiveDialog
-      title="New Meeting"
-      description="Create a new Meeting"
+      title="Update Meeting"
+      description="Edit the details of your meeting"
       open={open}
       onOpenChange={onOpenChange}
     >

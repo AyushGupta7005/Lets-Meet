@@ -81,7 +81,7 @@ export const meetingStatus = pgEnum("meeting_status", [
   "active",
   "processing",
   "completed",
-  "cancelesd",
+  "canceled",
 ]);
 
 // Meetings Schema

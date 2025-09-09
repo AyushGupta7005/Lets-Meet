@@ -32,11 +32,7 @@ export default function MeetingIdPageHeader({
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink
-              asChild
-              className="text-xl font-medium"
-              href="/agents"
-            >
+            <BreadcrumbLink asChild className="text-xl font-medium">
               <Link href="/meetings">My Meetings</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -46,7 +42,7 @@ export default function MeetingIdPageHeader({
               asChild
               className="text-foreground text-xl font-medium"
             >
-              <Link href={`/agents/${meetingId}`}>{meetingName}</Link>
+              <Link href={`/meetings/${meetingId}`}>{meetingName}</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
