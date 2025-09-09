@@ -18,7 +18,7 @@ export const columns: ColumnDef<TAgentGetOne>[] = [
             variant="botttsNeutral"
             className="size-6"
           />
-          <span className="fontsemibold capitalize">{row.original.name}</span>
+          <span className="font-semibold capitalize">{row.original.name}</span>
         </div>
         <div className="ml-2 flex items-center gap-x-2">
           <CornerDownRightIcon className="text-muted-foreground size-3" />

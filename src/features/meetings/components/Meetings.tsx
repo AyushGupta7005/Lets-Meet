@@ -1,24 +1,23 @@
 "use client";
 import ErrorState from "@/components/error-state";
 import LoadingState from "@/components/loading-state";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import useMeetingsFilters from "../hooks/useMeetingsFilters";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { DataTable } from "../../../components/data-table";
-import { columns } from "./columns";
 import EmptyState from "@/components/empty-state";
-import useAgentsFilters from "../hooks/useAgentsFilters";
-import DataPagination from "../../../components/data-pagination";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-export function Agents() {
+import { DataTable } from "@/components/data-table";
+import { columns } from "./columns";
+import DataPagination from "@/components/data-pagination";
+export default function Meetings() {
   const router = useRouter();
 
-  const [filters, setFilters] = useAgentsFilters();
+  const [filters, setFilters] = useMeetingsFilters();
   const isFiltersModified = filters.search !== "" || filters.page !== 1;
   const trpc = useTRPC();
   const { data } = useSuspenseQuery(
-    trpc.agents.getMany.queryOptions({ ...filters }),
+    trpc.meetings.getMany.queryOptions({ ...filters }),
   );
 
   // Ensure current page is within valid range when totalPages changes through url
@@ -37,8 +36,8 @@ export function Agents() {
       {data.items?.length === 0 && !isFiltersModified ? (
         <div className="my-auto">
           <EmptyState
-            title="Create your first Agent"
-            description="Create an agent to join meetings"
+            title="Create your first Meeting"
+            description="Create a meeting to get started"
           />
         </div>
       ) : (
@@ -46,8 +45,9 @@ export function Agents() {
           <DataTable
             data={data.items}
             columns={columns}
-            onRowClick={(row) => router.push(`/agents/${row.id}`)}
+            onRowClick={(row) => router.push(`/meetings/${row.id}`)}
           />
+
           <DataPagination
             page={filters.page}
             totalPages={data.totalPages}
@@ -58,20 +58,19 @@ export function Agents() {
     </div>
   );
 }
-
-export function AgentsLoader() {
+export function MeetingsLoader() {
   return (
     <LoadingState
-      title="Loading Agents"
+      title="Loading Meetings"
       description="This may take some while..."
     />
   );
 }
 
-export function AgentsError() {
+export function MeetingsError() {
   return (
     <ErrorState
-      title="Failed to load Agents"
+      title="Failed to load Meetings"
       description={"Something went wrong..."}
     />
   );

@@ -15,25 +15,25 @@ import {
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 import { MoreVerticalIcon, PencilIcon, TrashIcon } from "lucide-react";
-interface AgentIdPageHeaderProps {
-  agentId: string;
-  agentName: string;
+interface MeetingIdPageHeaderProps {
+  meetingId: string;
+  meetingName: string;
   onEdit: () => void;
   onRemove: () => void;
 }
-export default function AgentIdPageHeader({
-  agentId,
-  agentName,
+export default function MeetingIdPageHeader({
+  meetingId,
+  meetingName,
   onEdit,
   onRemove,
-}: AgentIdPageHeaderProps) {
+}: MeetingIdPageHeaderProps) {
   return (
     <div className="flex items-center justify-between">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild className="text-xl font-medium">
-              <Link href="/agents">My Agents</Link>
+              <Link href="/meetings">My Meetings</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator className="text-foreground text-xl font-medium" />
@@ -42,7 +42,7 @@ export default function AgentIdPageHeader({
               asChild
               className="text-foreground text-xl font-medium"
             >
-              <Link href={`/agents/${agentId}`}>{agentName}</Link>
+              <Link href={`/meetings/${meetingId}`}>{meetingName}</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
