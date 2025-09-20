@@ -14,7 +14,11 @@ export default function Meetings() {
   const router = useRouter();
 
   const [filters, setFilters] = useMeetingsFilters();
-  const isFiltersModified = filters.search !== "" || filters.page !== 1;
+  const isFiltersModified =
+    filters.search !== "" ||
+    filters.page !== 1 ||
+    !!filters.status ||
+    !!filters.agentId;
   const trpc = useTRPC();
   console.log("Filters:", filters);
   const { data } = useSuspenseQuery(
