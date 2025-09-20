@@ -3,7 +3,7 @@ import React from "react";
 import { SearchIcon } from "lucide-react";
 import useMeetingsFilters from "@/features/meetings/hooks/useMeetingsFilters";
 import { DEFAULT_PAGE } from "../../../../constants";
-export default function AgentSearchBar() {
+export default function MeetingsSearchFilter() {
   const [filters, setFilters] = useMeetingsFilters();
   return (
     <div className="relative">
