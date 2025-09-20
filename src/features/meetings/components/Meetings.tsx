@@ -16,6 +16,7 @@ export default function Meetings() {
   const [filters, setFilters] = useMeetingsFilters();
   const isFiltersModified = filters.search !== "" || filters.page !== 1;
   const trpc = useTRPC();
+  console.log("Filters:", filters);
   const { data } = useSuspenseQuery(
     trpc.meetings.getMany.queryOptions({ ...filters }),
   );
@@ -36,8 +37,8 @@ export default function Meetings() {
       {data.items?.length === 0 && !isFiltersModified ? (
         <div className="my-auto">
           <EmptyState
-            title="Create your first Meeting"
-            description="Create a meeting to get started"
+            title="Create your first meeting"
+            description="Schedule meetings with your agents to get started."
           />
         </div>
       ) : (
